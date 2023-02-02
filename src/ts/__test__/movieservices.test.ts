@@ -10,7 +10,7 @@ jest.mock("axios", () => ({
       if (!url.endsWith("error")) {
         resolve({ data: { Search: movies } });
       } else {
-        reject({ data: [2] });
+        reject();
       }
     });
   },
@@ -38,8 +38,9 @@ describe("getData", () => {
     ]);
   });
 
-  test.only("should return empty []", async () => {
+  test("should return empty []", async () => {
     let result = await getData("error");
+    console.log(result);
     expect(result.length).toBe(0);
   });
 });
