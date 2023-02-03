@@ -3,20 +3,30 @@
  */
 import { getData } from "../services/movieservice";
 import { movies } from "../services/__mocks__/movieservice";
+import axios from "axios";
+// jest.mock("./../services/movieservice.ts");
 
+//mocka axios i __mock__
+// länk till mock i övriga test-filer
 jest.mock("axios", () => ({
   get: async (url: string) => {
     return new Promise((resolve, reject) => {
       if (!url.endsWith("error")) {
         resolve({ data: { Search: movies } });
       } else {
-        reject();
+        reject([{}]);
       }
     });
   },
 }));
 
 describe("getData", () => {
+  test("should return empty []", async () => {
+    let result = await getData("error");
+    // console.log(result);
+    expect(result.length).toBe(0);
+  });
+
   test("should get mock data", async () => {
     let result = await getData("test");
 
@@ -36,11 +46,5 @@ describe("getData", () => {
         imdbID: "imdb-0000",
       },
     ]);
-  });
-
-  test("should return empty []", async () => {
-    let result = await getData("error");
-    console.log(result);
-    expect(result.length).toBe(0);
   });
 });
