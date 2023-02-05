@@ -1,6 +1,4 @@
 import { IMovie } from "../../models/Movie";
-// import { getData } from "../movieservice";
-import axios from "axios";
 
 export const movies: IMovie[] = [
   {
@@ -18,13 +16,3 @@ export const movies: IMovie[] = [
     Year: "1650",
   },
 ];
-
-export const getData = async (searchText: string): Promise<IMovie[]> => {
-  return new Promise((resolve) => {
-    if (!searchText) {
-      throw new Error("Something went wrong");
-    } else {
-      resolve(movies);
-    }
-  });
-};

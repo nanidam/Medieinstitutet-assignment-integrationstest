@@ -1,16 +1,10 @@
 /**
  * @jest-environment jsdom
  */
-import axios from "axios";
 
-// import { handleSubmit } from "../movieApp";
 import { movies } from "../services/__mocks__/movieservice";
 import * as movieApp from "../movieApp";
-import { getData } from "../services/movieservice";
-// import { handleSubmit } from "../movieApp";
-import { IMovie } from "../models/Movie";
 
-// jest.mock("./../services/movieservice.ts");
 jest.mock("axios", () => ({
   get: async (url: string) => {
     return new Promise((resolve, reject) => {
@@ -28,7 +22,7 @@ beforeEach(() => {
 });
 
 describe("init", () => {
-  test("should add a submit event listener to the form element", () => {
+  test("should call on handleSubmit", () => {
     const form = document.createElement("form");
     form.id = "searchForm";
     document.body.appendChild(form);
@@ -49,8 +43,6 @@ describe("handleSubmit", () => {
   test("should call on createHtml", async () => {
     //arrange
     const searchText = "SomeRandomMovie";
-    // const movies = await getData(searchText);
-
     const spyOnCreateHtml = jest
       .spyOn(movieApp, "createHtml")
       .mockImplementation();
@@ -84,28 +76,6 @@ describe("handleSubmit", () => {
     expect(spyOnDisplayNoResult).toHaveBeenCalled();
     spyOnDisplayNoResult.mockRestore();
   });
-
-  test("should call displayNoResult when getData fails", async () => {
-    // Arrange
-    const searchText = "error";
-    const spyOnDisplayNoResult = jest
-      .spyOn(movieApp, "displayNoResult")
-      .mockImplementation();
-
-    document.body.innerHTML = `
-      <input type="text" id="searchText" value="${searchText}" />
-      <div id="movie-container"></div>`;
-
-    // Act
-    await movieApp.handleSubmit();
-
-    // Assert
-    // expect(spyOnDisplayNoResult).toHaveBeenCalledWith(
-    //   document.getElementById("movie-container")
-    // );
-    expect(spyOnDisplayNoResult).toHaveBeenCalled();
-    spyOnDisplayNoResult.mockRestore();
-  });
 });
 
 describe("createHtml", () => {
@@ -131,7 +101,7 @@ describe("createHtml", () => {
 
 describe("displayNoResult", () => {
   test("should display no result", () => {
-    let container: HTMLDivElement = document.createElement("div");
+    const container: HTMLDivElement = document.createElement("div");
 
     movieApp.displayNoResult(container);
 

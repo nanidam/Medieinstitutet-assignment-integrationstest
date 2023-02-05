@@ -1,20 +1,17 @@
 /**
  * @jest-environment jsdom
  */
+
 import { getData } from "../services/movieservice";
 import { movies } from "../services/__mocks__/movieservice";
-import axios from "axios";
-// jest.mock("./../services/movieservice.ts");
 
-//mocka axios i __mock__
-// länk till mock i övriga test-filer
 jest.mock("axios", () => ({
   get: async (url: string) => {
     return new Promise((resolve, reject) => {
       if (!url.endsWith("error")) {
         resolve({ data: { Search: movies } });
       } else {
-        reject([{}]);
+        reject([]);
       }
     });
   },
@@ -22,13 +19,12 @@ jest.mock("axios", () => ({
 
 describe("getData", () => {
   test("should return empty []", async () => {
-    let result = await getData("error");
-    // console.log(result);
+    const result = await getData("error");
     expect(result.length).toBe(0);
   });
 
   test("should get mock data", async () => {
-    let result = await getData("test");
+    const result = await getData("Allstar");
 
     expect(result).toEqual([
       {
